@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'api_keys' => [
+        'coinmarketcap' => env('COINMARKETCAP_API_KEY'),
+    ],
 ];
