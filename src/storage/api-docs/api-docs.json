@@ -126,6 +126,238 @@
                 ]
             }
         },
+        "/api/portfolio/index": {
+            "get": {
+                "tags": [
+                    "Portfolio"
+                ],
+                "summary": "Get user portfolio",
+                "description": "Get the portfolio of the authenticated user",
+                "operationId": "2d01b406e1ab957cab24814f8adac4d9",
+                "responses": {
+                    "200": {
+                        "description": "A list of portfolio items",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PortfolioResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
+        },
+        "/api/portfolio/show/{id}": {
+            "get": {
+                "tags": [
+                    "Portfolio"
+                ],
+                "summary": "Get portfolio by ID",
+                "description": "Retrieve a specific portfolio by its ID",
+                "operationId": "dd53822bdfe179fb708d0e8dd89181a6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the portfolio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The requested portfolio",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PortfolioResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Portfolio not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
+        },
+        "/api/portfolio/store": {
+            "post": {
+                "tags": [
+                    "Portfolio"
+                ],
+                "summary": "Create a new portfolio",
+                "description": "Create a new portfolio for the authenticated user",
+                "operationId": "6c14ca22ab7e4256030fe3b6832c8e31",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the portfolio",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Portfolio created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PortfolioResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
+        },
+        "/api/portfolio/update/{id}": {
+            "patch": {
+                "tags": [
+                    "Portfolio"
+                ],
+                "summary": "Update an existing portfolio",
+                "description": "Update the details of a portfolio",
+                "operationId": "af330cb990fee95402f991be8551d975",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the portfolio to be updated",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Updated name of the portfolio",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Portfolio updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PortfolioResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Portfolio not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
+        },
+        "/api/portfolio/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Portfolio"
+                ],
+                "summary": "Delete a portfolio",
+                "description": "Delete a specific portfolio by ID",
+                "operationId": "6169795749018ff6280730aea06a6972",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the portfolio to be deleted",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Portfolio deleted successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Portfolio not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
+        },
         "/api/auth/register": {
             "post": {
                 "tags": [
@@ -195,6 +427,35 @@
         }
     },
     "components": {
+        "schemas": {
+            "PortfolioResource": {
+                "properties": {
+                    "id": {
+                        "description": "ID of the portfolio",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Name of the portfolio",
+                        "type": "string"
+                    },
+                    "balance": {
+                        "description": "Balance of the portfolio, as a string with a '$' symbol",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Portfolio creation time",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated": {
+                        "description": "Portfolio last update time",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "Sanctum Auth": {
                 "type": "apiKey",
@@ -208,6 +469,10 @@
         {
             "name": "Authentication",
             "description": "API Endpoints for User Authentication"
+        },
+        {
+            "name": "Portfolio",
+            "description": "Operations related to user portfolios"
         }
     ]
 }
