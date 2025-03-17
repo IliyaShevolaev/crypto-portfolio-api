@@ -4,11 +4,12 @@ namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-
+ 
 class LoginController extends Controller
 {
-    public function login(LoginRequest $loginRequest)
+    public function login(LoginRequest $loginRequest) : JsonResponse
     {
         $loginData = $loginRequest->validated();
 
@@ -22,7 +23,7 @@ class LoginController extends Controller
         return response()->json(['message' => 'Unauthorized'], 401);
     }
 
-    public function logout()
+    public function logout() : JsonResponse
     {
         $user = Auth::user();
 
@@ -32,7 +33,7 @@ class LoginController extends Controller
         return response()->json(['message' => 'logout'], 200);
     }
 
-    public function absoluteLogOut()
+    public function absoluteLogOut() : JsonResponse
     {
         $user = Auth::user();
         $user->tokens()->delete();

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\Auth\RegisterRequest;
 
 class RegisterController extends Controller
 {
-    public function register(RegisterRequest $registerRequest) 
+    public function register(RegisterRequest $registerRequest) : JsonResponse
     {
         $registerData = $registerRequest->validated();
 
