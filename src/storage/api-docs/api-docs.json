@@ -62,13 +62,13 @@
                 }
             }
         },
-        "/api/logout": {
+        "/api/auth/logout": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
                 "summary": "Logout user by deleting current access token",
-                "operationId": "b94325d4b91e6b9134ef2f6faf0924f8",
+                "operationId": "ba942f3ef9bd9df4eb886a04dd50f2a7",
                 "responses": {
                     "200": {
                         "description": "Successful logout",
@@ -89,18 +89,18 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctumAuth": []
                     }
                 ]
             }
         },
-        "/api/logout-all": {
+        "/api/auth/logout-all": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
                 "summary": "Logout user from all devices by deleting all access tokens",
-                "operationId": "e4bcb8351d54bed830737d184f6e2a21",
+                "operationId": "6eac3154f743e12de6d1c0c4318b8e52",
                 "responses": {
                     "200": {
                         "description": "Successful absolute logout",
@@ -121,7 +121,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctumAuth": []
                     }
                 ]
             }
@@ -191,6 +191,16 @@
                         "description": "Validation error"
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "Sanctum Auth": {
+                "type": "apiKey",
+                "description": "Введите токен в формате 'Bearer {your-token}'",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     },
