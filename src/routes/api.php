@@ -7,13 +7,12 @@ use App\Services\CoinmarketcapService;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Portfolio\PortfolioController;
-use Brick\Math\BigDecimal;
+use App\Http\Controllers\API\Portfolio\TransactionController;
+use App\Services\CoinGeckoService;
 
-Route::get('/test', function (Request $request) {
-    $balance = BigDecimal::of('0.00000001');
-    $balance = $balance->plus(BigDecimal::of('0.000002111'));
+Route::get('/test', function (Request $request, CoinGeckoService $coinGeckoService) {
 
-    return $balance;
+    return $coinGeckoService->getHistoricalPrice('solana', '01-02-2025');
 });
 
 Route::get('/user', function (Request $request) {
@@ -33,6 +32,14 @@ Route::group(['prefix' => 'portfolio', 'middleware' => 'auth:sanctum'], function
     Route::post('/store', [PortfolioController::class, 'store']);
     Route::patch('/update/{portfolio}', [PortfolioController::class, 'update']);
     Route::delete('/delete/{portfolio}', [PortfolioController::class, 'delete']);
+});
+
+Route::group(['prefix' => 'transaction', 'middleware' => 'auth:sanctum'], function() {
+    // Route::get('/index', [PortfolioController::class, 'index']);
+    // Route::get('/show/{portfolio}', [PortfolioController::class, 'show']);
+    Route::post('/store', [TransactionController::class, 'store']);
+    // Route::patch('/update/{portfolio}', [PortfolioController::class, 'update']);
+    // Route::delete('/delete/{portfolio}', [PortfolioController::class, 'delete']);
 });
 
 Route::get('/price-test', function (CoinmarketcapService $coinmarketcap) {

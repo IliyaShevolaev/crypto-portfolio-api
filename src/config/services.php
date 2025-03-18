@@ -37,5 +37,6 @@ return [
 
     'api_keys' => [
         'coinmarketcap' => env('COINMARKETCAP_API_KEY'),
+        'coingecko' => env('COINGECKO_API_KEY'),
     ],
 ];
