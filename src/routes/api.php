@@ -11,8 +11,7 @@ use App\Http\Controllers\API\Portfolio\TransactionController;
 use App\Services\CoinGeckoService;
 
 Route::get('/test', function (Request $request, CoinGeckoService $coinGeckoService) {
-
-    return $coinGeckoService->getHistoricalPrice('solana', '01-02-2025');
+    return 'test';
 });
 
 Route::get('/user', function (Request $request) {
@@ -35,11 +34,11 @@ Route::group(['prefix' => 'portfolio', 'middleware' => 'auth:sanctum'], function
 });
 
 Route::group(['prefix' => 'transaction', 'middleware' => 'auth:sanctum'], function() {
-    // Route::get('/index', [PortfolioController::class, 'index']);
-    // Route::get('/show/{portfolio}', [PortfolioController::class, 'show']);
+     Route::get('/index/{portfolio}', [TransactionController::class, 'index']);
+    Route::get('/show/{transaction}', [TransactionController::class, 'show']);
     Route::post('/store', [TransactionController::class, 'store']);
-    // Route::patch('/update/{portfolio}', [PortfolioController::class, 'update']);
-    // Route::delete('/delete/{portfolio}', [PortfolioController::class, 'delete']);
+    Route::patch('/update/{transaction}', [TransactionController::class, 'update']);
+    Route::delete('/delete/{transaction}', [TransactionController::class, 'delete']);
 });
 
 Route::get('/price-test', function (CoinmarketcapService $coinmarketcap) {

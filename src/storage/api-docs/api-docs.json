@@ -428,6 +428,47 @@
     },
     "components": {
         "schemas": {
+            "TransactionRequest": {
+                "properties": {
+                    "coin_name": {
+                        "description": "Name of the cryptocurrency involved in the transaction",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "A description of the transaction",
+                        "type": "string"
+                    },
+                    "amount": {
+                        "description": "Amount of the cryptocurrency involved in the transaction",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "price_at_buy_moment": {
+                        "description": "Price of the cryptocurrency at the moment of the transaction",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "total_value_in_usd": {
+                        "description": "Total value of the transaction in USD",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "is_buying": {
+                        "description": "Indicates whether the transaction is a buy (true) or sell (false)",
+                        "type": "boolean"
+                    },
+                    "portfolio_id": {
+                        "description": "ID of the portfolio associated with the transaction",
+                        "type": "integer"
+                    },
+                    "transaction_date": {
+                        "description": "Date and time when the transaction occurred",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "PortfolioResource": {
                 "properties": {
                     "id": {
@@ -449,6 +490,47 @@
                     },
                     "updated": {
                         "description": "Portfolio last update time",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Transaction": {
+                "properties": {
+                    "coin_name": {
+                        "description": "Name of the cryptocurrency involved in the transaction",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "A description of the transaction",
+                        "type": "string"
+                    },
+                    "amount": {
+                        "description": "Amount of the cryptocurrency involved in the transaction",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "price_at_buy_moment": {
+                        "description": "Price of the cryptocurrency at the moment of the transaction",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "total_value_in_usd": {
+                        "description": "Total value of the transaction in USD",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "is_buying": {
+                        "description": "Indicates whether the transaction is a buy (true) or sell (false)",
+                        "type": "boolean"
+                    },
+                    "portfolio_id": {
+                        "description": "ID of the portfolio associated with the transaction",
+                        "type": "integer"
+                    },
+                    "transaction_date": {
+                        "description": "Date and time when the transaction occurred",
                         "type": "string",
                         "format": "date-time"
                     }

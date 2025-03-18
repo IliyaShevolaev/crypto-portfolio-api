@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Swagger;
 
 use App\Models\Portfolio;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Portrolio\PortfoloRequest;
+use App\Http\Requests\Portfolio\PortfolioRequest;
 
 
 /**
@@ -104,7 +104,7 @@ class PortfolioController extends Controller
      *     )
      * )
      */
-    public function store(PortfoloRequest $portfoloRequest)
+    public function store(PortfolioRequest $portfoloRequest)
     {
         //
     }
@@ -149,7 +149,7 @@ class PortfolioController extends Controller
      *     )
      * )
      */
-    public function update(Portfolio $portfolio, PortfoloRequest $portfoloRequest)
+    public function update(Portfolio $portfolio, PortfolioRequest $portfoloRequest)
     {
         //
     }

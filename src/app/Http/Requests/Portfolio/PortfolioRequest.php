@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Portrolio;
+namespace App\Http\Requests\Portfolio;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PortfoloRequest extends FormRequest
+class PortfolioRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

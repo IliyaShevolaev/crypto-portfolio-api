@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API\Portfolio;
 use App\Models\Portfolio;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Portfolio\PortfolioRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\Portrolio\PortfoloRequest;
 use App\Http\Resources\Portfolio\PortfolioReource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -24,9 +24,9 @@ class PortfolioController extends Controller
         return new PortfolioReource($portfolio);
     }
 
-    public function store(PortfoloRequest $portfoloRequest) : JsonResponse
+    public function store(PortfolioRequest $portfolioRequest) : JsonResponse
     {
-        $portfolioData = $portfoloRequest->validated();
+        $portfolioData = $portfolioRequest->validated();
 
         $portrolio = Portfolio::create([
             'name' => $portfolioData['name'],
@@ -36,9 +36,9 @@ class PortfolioController extends Controller
         return response()->json($portrolio, 200);
     }
 
-    public function update(Portfolio $portfolio, PortfoloRequest $portfoloRequest) : JsonResponse
+    public function update(Portfolio $portfolio, PortfolioRequest $portfolioRequest) : JsonResponse
     {
-        $newData = $portfoloRequest->validated();
+        $newData = $portfolioRequest->validated();
 
         $portfolio->update($newData);
 
