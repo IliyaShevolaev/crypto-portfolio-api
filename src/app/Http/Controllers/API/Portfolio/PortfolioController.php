@@ -8,10 +8,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Portfolio\PortfolioRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Portfolio\PortfolioReource;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class PortfolioController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index() : AnonymousResourceCollection
     {
         $userPortfolio = Portfolio::where('user_id', Auth::id())->get();
@@ -21,6 +24,8 @@ class PortfolioController extends Controller
 
     public function show(Portfolio $portfolio) : PortfolioReource
     {
+        $this->authorize('isOwner', $portfolio);
+        
         return new PortfolioReource($portfolio);
     }
 
@@ -38,6 +43,8 @@ class PortfolioController extends Controller
 
     public function update(Portfolio $portfolio, PortfolioRequest $portfolioRequest) : JsonResponse
     {
+        $this->authorize('isOwner', $portfolio);
+
         $newData = $portfolioRequest->validated();
 
         $portfolio->update($newData);
@@ -47,6 +54,8 @@ class PortfolioController extends Controller
 
     public function delete(Portfolio $portfolio) : JsonResponse
     {
+        $this->authorize('isOwner', $portfolio);
+
         $portfolio->deleteOrFail();
 
         return response()->json([

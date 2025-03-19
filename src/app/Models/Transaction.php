@@ -11,6 +11,6 @@ class Transaction extends Model
 
     public function portfolio() : BelongsTo
     {
-        return $this->belongsTo(Portfolio::class, 'id', 'portfolio_id');
+        return $this->belongsTo(Portfolio::class, 'portfolio_id', 'id');
     }
 }
