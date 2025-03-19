@@ -424,6 +424,203 @@
                     }
                 }
             }
+        },
+        "/api/transaction/index/{portfolio}": {
+            "get": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Get portfolio transactions",
+                "description": "Retrieve a list of transactions for a given portfolio",
+                "operationId": "7f469a60243280d528b021f6e7413b6c",
+                "parameters": [
+                    {
+                        "name": "portfolio",
+                        "in": "path",
+                        "description": "ID of the portfolio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of transactions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Transaction"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
+        },
+        "/api/transaction/show/{transaction}": {
+            "get": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Get transaction details",
+                "description": "Retrieve details of a specific transaction",
+                "operationId": "2e5d83253b2e7df735bbfc7ed90d2bd1",
+                "parameters": [
+                    {
+                        "name": "transaction",
+                        "in": "path",
+                        "description": "ID of the transaction",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
+        },
+        "/api/transaction/store": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Create a new transaction",
+                "description": "Add a new transaction to the portfolio",
+                "operationId": "d0460acf126fa17fb0017c5e5e54a11b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Transaction created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transaction"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
+        },
+        "/api/transaction/update/{transaction}": {
+            "patch": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Update a transaction",
+                "description": "Modify an existing transaction",
+                "operationId": "4f85576226b25e27c7df99192073b06b",
+                "parameters": [
+                    {
+                        "name": "transaction",
+                        "in": "path",
+                        "description": "ID of the transaction to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Transaction updated successfully"
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
+        },
+        "/api/transaction/delete/{transaction}": {
+            "delete": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Delete a transaction",
+                "description": "Remove a specific transaction from the portfolio",
+                "operationId": "f9fbfae8470a87a24c4b5276a5021596",
+                "parameters": [
+                    {
+                        "name": "transaction",
+                        "in": "path",
+                        "description": "ID of the transaction to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction deleted successfully"
+                    },
+                    "404": {
+                        "description": "Transaction not found"
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -443,16 +640,6 @@
                         "type": "number",
                         "format": "float"
                     },
-                    "price_at_buy_moment": {
-                        "description": "Price of the cryptocurrency at the moment of the transaction",
-                        "type": "number",
-                        "format": "float"
-                    },
-                    "total_value_in_usd": {
-                        "description": "Total value of the transaction in USD",
-                        "type": "number",
-                        "format": "float"
-                    },
                     "is_buying": {
                         "description": "Indicates whether the transaction is a buy (true) or sell (false)",
                         "type": "boolean"
@@ -462,7 +649,7 @@
                         "type": "integer"
                     },
                     "transaction_date": {
-                        "description": "Date and time when the transaction occurred",
+                        "description": "Date and time when the transaction occurred (format: dd-mm-yyyy)",
                         "type": "string",
                         "format": "date-time"
                     }
@@ -498,6 +685,10 @@
             },
             "Transaction": {
                 "properties": {
+                    "id": {
+                        "description": "Id of transaction",
+                        "type": "number"
+                    },
                     "coin_name": {
                         "description": "Name of the cryptocurrency involved in the transaction",
                         "type": "string"
@@ -555,6 +746,10 @@
         {
             "name": "Portfolio",
             "description": "Operations related to user portfolios"
+        },
+        {
+            "name": "Transaction",
+            "description": "Operations related to portfolio transactions"
         }
     ]
 }

@@ -21,11 +21,9 @@ class TransactionRequest extends FormRequest
      *     @OA\Property(property="coin_name", type="string", description="Name of the cryptocurrency involved in the transaction"),
      *     @OA\Property(property="description", type="string", description="A description of the transaction"),
      *     @OA\Property(property="amount", type="number", format="float", description="Amount of the cryptocurrency involved in the transaction"),
-     *     @OA\Property(property="price_at_buy_moment", type="number", format="float", description="Price of the cryptocurrency at the moment of the transaction"),
-     *     @OA\Property(property="total_value_in_usd", type="number", format="float", description="Total value of the transaction in USD"),
      *     @OA\Property(property="is_buying", type="boolean", description="Indicates whether the transaction is a buy (true) or sell (false)"),
      *     @OA\Property(property="portfolio_id", type="integer", description="ID of the portfolio associated with the transaction"),
-     *     @OA\Property(property="transaction_date", type="string", format="date-time", description="Date and time when the transaction occurred")
+     *     @OA\Property(property="transaction_date", type="string", format="date-time", description="Date and time when the transaction occurred (format: dd-mm-yyyy)")
      * )
      */
     public function rules(): array

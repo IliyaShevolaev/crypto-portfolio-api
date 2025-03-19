@@ -34,7 +34,7 @@ Route::group(['prefix' => 'portfolio', 'middleware' => 'auth:sanctum'], function
 });
 
 Route::group(['prefix' => 'transaction', 'middleware' => 'auth:sanctum'], function() {
-     Route::get('/index/{portfolio}', [TransactionController::class, 'index']);
+    Route::get('/index/{portfolio}', [TransactionController::class, 'index']);
     Route::get('/show/{transaction}', [TransactionController::class, 'show']);
     Route::post('/store', [TransactionController::class, 'store']);
     Route::patch('/update/{transaction}', [TransactionController::class, 'update']);

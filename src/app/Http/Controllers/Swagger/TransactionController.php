@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Portfolio;
+namespace App\Http\Controllers\Swagger;
 
 use App\Actions\StoreTransactionAction;
 use App\Actions\UpdateTransactionAction;
@@ -20,12 +20,13 @@ class TransactionController extends ServiceController
 {
     /**
      * @OA\Get(
-     *     path="/api/portfolio/{portfolio_id}/transactions",
+     *     path="/api/transaction/index/{portfolio}",
      *     summary="Get portfolio transactions",
      *     description="Retrieve a list of transactions for a given portfolio",
      *     tags={"Transaction"},
+     *     security={{"Sanctum Auth":{}}},
      *     @OA\Parameter(
-     *         name="portfolio_id",
+     *         name="portfolio",
      *         in="path",
      *         required=true,
      *         description="ID of the portfolio",
@@ -45,12 +46,13 @@ class TransactionController extends ServiceController
 
     /**
      * @OA\Get(
-     *     path="/api/transactions/{transaction_id}",
+     *     path="/api/transaction/show/{transaction}",
      *     summary="Get transaction details",
      *     description="Retrieve details of a specific transaction",
      *     tags={"Transaction"},
+     *     security={{"Sanctum Auth":{}}},
      *     @OA\Parameter(
-     *         name="transaction_id",
+     *         name="transaction",
      *         in="path",
      *         required=true,
      *         description="ID of the transaction",
@@ -70,10 +72,11 @@ class TransactionController extends ServiceController
 
     /**
      * @OA\Post(
-     *     path="/api/portfolio/{portfolio_id}/transactions",
+     *     path="/api/transaction/store",
      *     summary="Create a new transaction",
      *     description="Add a new transaction to the portfolio",
      *     tags={"Transaction"},
+     *     security={{"Sanctum Auth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/TransactionRequest")
@@ -96,12 +99,13 @@ class TransactionController extends ServiceController
 
     /**
      * @OA\Patch(
-     *     path="/api/transactions/{transaction_id}",
+     *     path="/api/transaction/update/{transaction}",
      *     summary="Update a transaction",
      *     description="Modify an existing transaction",
      *     tags={"Transaction"},
+     *     security={{"Sanctum Auth":{}}},
      *     @OA\Parameter(
-     *         name="transaction_id",
+     *         name="transaction",
      *         in="path",
      *         required=true,
      *         description="ID of the transaction to update",
@@ -126,7 +130,30 @@ class TransactionController extends ServiceController
         //
     }
 
-
+    /**
+     * @OA\Delete(
+     *     path="/api/transaction/delete/{transaction}",
+     *     summary="Delete a transaction",
+     *     description="Remove a specific transaction from the portfolio",
+     *     tags={"Transaction"},
+     *     security={{"Sanctum Auth":{}}},
+     *     @OA\Parameter(
+     *         name="transaction",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the transaction to delete",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Transaction deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Transaction not found"
+     *     )
+     * )
+     */
     public function delete(Transaction $transaction)
     {
         //

@@ -11,6 +11,7 @@ class TransactionResource extends JsonResource
      * @OA\Schema(
      *     schema="Transaction",
      *     type="object",
+     *     @OA\Property(property="id", type="number", description="Id of transaction"),
      *     @OA\Property(property="coin_name", type="string", description="Name of the cryptocurrency involved in the transaction"),
      *     @OA\Property(property="description", type="string", description="A description of the transaction"),
      *     @OA\Property(property="amount", type="number", format="float", description="Amount of the cryptocurrency involved in the transaction"),
@@ -24,6 +25,7 @@ class TransactionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'coin_name' => $this->coin_name,
             'description' => $this->description,
             'amount' => $this->amount,
