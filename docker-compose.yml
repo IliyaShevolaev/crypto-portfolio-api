@@ -9,6 +9,9 @@ services:
         depends_on:
             - php
             - postgres
+            - redis
+        networks:
+            - laravel 
 
     php:
         build:
@@ -16,6 +19,8 @@ services:
             dockerfile: php.Dockerfile
         volumes:
             - ./src:/var/www/laravel
+        networks:
+            - laravel 
 
     postgres:
         image: postgres:16
@@ -25,6 +30,16 @@ services:
             - "./db_data:/var/lib/postgresql/data"
         env_file:
             - docker/postgres/postgres.env
+        networks:
+            - laravel 
+
+    redis:
+        image: redis:latest
+        restart: unless-stopped
+        ports:
+            - "6379:6379"
+        networks:
+            - laravel
     
     composer:
         build: 
@@ -40,3 +55,9 @@ services:
         volumes:
             - "./src:/var/www/laravel"
         entrypoint: ["php", "/var/www/laravel/artisan"]
+        networks:
+            - laravel
+
+networks:
+    laravel:
+        driver: bridge
