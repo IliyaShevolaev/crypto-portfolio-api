@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Portfolio;
 
+use App\Actions\PortfolioBalanceCalculateAction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,7 +24,7 @@ class PortfolioReource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'balance' => '0.0$',
+            'balance' => PortfolioBalanceCalculateAction::calculate($this->resource),
             'created_at' => $this->created_at,
             'updated' => $this->updated_at,
         ];
