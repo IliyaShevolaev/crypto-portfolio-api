@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\BaseControllers;
 
+use App\Contracts\CoinApiInterface;
 use App\Http\Controllers\Controller;
-use App\Services\CoinGeckoService;
-use App\Services\CoinmarketcapService;
 
 class ServiceController extends Controller
 {
-    protected CoinGeckoService $coinGeckoService;
+    protected CoinApiInterface $coinApi;
 
-    public function __construct(CoinGeckoService $coinGeckoService)
+    public function __construct(CoinApiInterface $coinApi)
     {
-        $this->coinGeckoService = $coinGeckoService;
+        $this->coinApi = $coinApi;
     }
 }

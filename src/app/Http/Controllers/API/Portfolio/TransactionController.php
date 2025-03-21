@@ -35,7 +35,7 @@ class TransactionController extends ServiceController
     {
         $transactionData = $transactionRequest->validated();
 
-        $responce = $storeTransactionAction->handle($transactionData, $this->coinGeckoService);
+        $responce = $storeTransactionAction->handle($transactionData, $this->coinApi);
 
         return $responce;
     }
@@ -46,7 +46,7 @@ class TransactionController extends ServiceController
 
         $transactionData = $transactionRequest->validated();
 
-        $responce = $updateTransactionAction->handle($transactionData, $transaction, $this->coinGeckoService);
+        $responce = $updateTransactionAction->handle($transactionData, $transaction, $this->coinApi);
 
         return $responce;
     }

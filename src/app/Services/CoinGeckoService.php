@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Cache;
+use App\Contracts\CoinApiInterface;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
-class CoinGeckoService
+class CoinGeckoService implements CoinApiInterface
 {
     protected string $baseUrl;
     protected string $apiKey;
@@ -33,7 +33,6 @@ class CoinGeckoService
         return $response->json();
     }
 
-
     public function getCurrentPrice(string $symbol, string $currency = 'usd')
     {
         $cachedValue = Cache::get('coin:' . $symbol);
@@ -59,6 +58,6 @@ class CoinGeckoService
             'localization' => false,
         ]);
 
-        return $data['market_data']['current_price'][$currency] ?? null;
+        return $data['market_data']['current_price'][$currency];
     }
 }

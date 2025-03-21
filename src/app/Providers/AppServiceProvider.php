@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\CoinGeckoService;
+use App\Contracts\CoinApiInterface;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -12,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(CoinApiInterface::class, CoinGeckoService::class);
     }
 
     /**
@@ -21,5 +23,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         JsonResource::withoutWrapping();
+
     }
 }
