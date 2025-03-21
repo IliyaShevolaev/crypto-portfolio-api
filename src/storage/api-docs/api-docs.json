@@ -667,8 +667,9 @@
                         "type": "string"
                     },
                     "balance": {
-                        "description": "Balance of the portfolio, as a string with a '$' symbol",
-                        "type": "string"
+                        "description": "Portfolio balance in USD as calculated from transactions",
+                        "type": "number",
+                        "format": "decimal"
                     },
                     "created_at": {
                         "description": "Portfolio creation time",

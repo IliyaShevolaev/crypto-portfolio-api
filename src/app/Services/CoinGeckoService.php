@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CoinGeckoService
 {
@@ -31,14 +33,23 @@ class CoinGeckoService
         return $response->json();
     }
 
+
     public function getCurrentPrice(string $symbol, string $currency = 'usd')
     {
+        $cachedValue = Cache::get('coin:' . $symbol);
+
+        if ($cachedValue) {
+            return $cachedValue;
+        }
+
         $data = $this->request("simple/price", [
             'ids' => $symbol,
             'vs_currencies' => $currency
         ]);
 
-        return $data[$symbol][$currency] ?? null;
+        Cache::set('coin:' . $symbol, $data[$symbol][$currency], 60 * 2);
+
+        return $data[$symbol][$currency];
     }
 
     public function getHistoricalPrice(string $symbol, string $date, string $currency = 'usd')

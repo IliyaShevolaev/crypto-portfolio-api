@@ -8,21 +8,11 @@ use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Portfolio\PortfolioController;
 use App\Http\Controllers\API\Portfolio\TransactionController;
+use App\Services\CoinGeckoService;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Redis;
 
-Route::get('/test', function (Request $request) {
-    return 'test';
-});
-
-Route::get('/test/put', function (Request $request) {
-    Redis::set('surname', 'ivanovich');
-
-    return 'put';
-});
-
-Route::get('/test/get', function (Request $request) {
-    return Redis::get('surname');
+Route::get('/test', function (Request $request, CoinGeckoService $coin) {
+    return $coin->getCurrentPrice('bitcoin');
 });
 
 Route::get('/user', function (Request $request) {

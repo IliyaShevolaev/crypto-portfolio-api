@@ -3,11 +3,12 @@
 namespace App\Actions;
 
 use App\Models\Portfolio;
+use App\Services\CoinGeckoService;
 use Brick\Math\BigDecimal;
 
 class PortfolioBalanceCalculateAction
 {
-    public static function calculate(Portfolio $portfolio)
+    public static function calculate(Portfolio $portfolio) : BigDecimal
     {
         $balance = BigDecimal::of('0.0');
 

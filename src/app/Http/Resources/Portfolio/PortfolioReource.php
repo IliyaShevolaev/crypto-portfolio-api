@@ -14,7 +14,7 @@ class PortfolioReource extends JsonResource
      *     type="object",
      *     @OA\Property(property="id", type="integer", description="ID of the portfolio"),
      *     @OA\Property(property="name", type="string", description="Name of the portfolio"),
-     *     @OA\Property(property="balance", type="string", description="Balance of the portfolio, as a string with a '$' symbol"),
+     *     @OA\Property(property="balance", type="number", format="decimal", description="Portfolio balance in USD as calculated from transactions"),
      *     @OA\Property(property="created_at", type="string", format="date-time", description="Portfolio creation time"),
      *     @OA\Property(property="updated", type="string", format="date-time", description="Portfolio last update time")
      * )
