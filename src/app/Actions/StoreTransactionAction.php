@@ -4,22 +4,24 @@ namespace App\Actions;
 
 use Brick\Math\BigDecimal;
 use App\Models\Transaction;
-use App\Services\CoinGeckoService;
+use App\Contracts\CoinApiInterface;
 use App\Utilities\DateConvertation;
+use Illuminate\Support\Facades\Log;
 use App\Http\Resources\Portfolio\TransactionResource;
-use App\Services\CoinmarketcapService;
 
 class StoreTransactionAction
 {
-    public function handle(array $transactionData, CoinGeckoService $coinGeckoService)
+    public function handle(array $transactionData, CoinApiInterface $coinApi)
     {
+        $coinName = $transactionData['coin_name'];
+
         if (isset($transactionData['transaction_date'])) {
-            $currentPrice = $coinGeckoService->getHistoricalPrice(
-                $transactionData['coin_name'], 
+            $currentPrice = $coinApi->getHistoricalPrice(
+                $coinName, 
                 $transactionData['transaction_date'],
             );
         } else {
-            $currentPrice = $coinGeckoService->getCurrentPrice($transactionData['coin_name']);
+            $currentPrice = $coinApi->getCurrentPrice([$coinName])[$coinName]['usd'];
         }
 
 
@@ -28,7 +30,7 @@ class StoreTransactionAction
         }
 
         $transaction = Transaction::create([
-            'coin_name' => $transactionData['coin_name'],
+            'coin_name' => $coinName,
             'description' => $transactionData['description'] ?? null,
             'amount' => $transactionData['amount'],
             'price_at_buy_moment' => $currentPrice,

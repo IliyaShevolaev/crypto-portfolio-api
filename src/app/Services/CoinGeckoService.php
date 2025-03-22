@@ -33,31 +33,44 @@ class CoinGeckoService implements CoinApiInterface
         return $response->json();
     }
 
-    public function getCurrentPrice(string $symbol, string $currency = 'usd')
+    public function getCurrentPrice(array $symbols) : array
     {
-        $cachedValue = Cache::get('coin:' . $symbol);
+        $resultCoins = [];
+        $coinsToRequest = [];
 
-        if ($cachedValue) {
-            return $cachedValue;
+        foreach ($symbols as $symbol) {
+            $cachedCoin = Cache::get('coins:' . $symbol);
+            if ($cachedCoin === null) {
+                $coinsToRequest[] = $symbol;
+            } else {
+                $resultCoins[$symbol] = $cachedCoin;
+            }
         }
 
-        $data = $this->request("simple/price", [
-            'ids' => $symbol,
-            'vs_currencies' => $currency
-        ]);
+        if (!empty($coinsToRequest)) {
+            $symbolsString = implode(',', $coinsToRequest);
+            $coins = $this->request("simple/price", [
+                'ids' => $symbolsString,
+                'vs_currencies' => 'usd',
+            ]);
 
-        Cache::set('coin:' . $symbol, $data[$symbol][$currency], 60 * 2);
+            foreach ($coins as $coinName => $coinPrice) {
+                Cache::put('coins:' . $coinName, $coinPrice, 60 * 2);
+                $resultCoins[$coinName] = $coinPrice;
+            }
+        }
 
-        return $data[$symbol][$currency];
+        return $resultCoins;
     }
 
-    public function getHistoricalPrice(string $symbol, string $date, string $currency = 'usd')
+
+    public function getHistoricalPrice(string $symbol, string $date)
     {
         $data = $this->request("coins/{$symbol}/history", [
             'date' => $date,
             'localization' => false,
         ]);
 
-        return $data['market_data']['current_price'][$currency];
+        return $data['market_data']['current_price']['usd'];
     }
 }

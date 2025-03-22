@@ -9,10 +9,9 @@ use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Portfolio\PortfolioController;
 use App\Http\Controllers\API\Portfolio\TransactionController;
 use App\Services\CoinGeckoService;
-use Illuminate\Support\Facades\Cache;
 
 Route::get('/test', function (Request $request, CoinGeckoService $coin) {
-    return $coin->getCurrentPrice('bitcoin');
+    return $coin->getCurrentPrice(['ethereum', 'solana']);
 });
 
 Route::get('/user', function (Request $request) {
