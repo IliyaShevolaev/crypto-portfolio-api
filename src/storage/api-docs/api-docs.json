@@ -629,16 +629,26 @@
                 "properties": {
                     "coin_name": {
                         "description": "Name of the cryptocurrency involved in the transaction",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 30
                     },
                     "description": {
                         "description": "A description of the transaction",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255,
+                        "nullable": true
                     },
                     "amount": {
-                        "description": "Amount of the cryptocurrency involved in the transaction",
+                        "description": "Amount of the cryptocurrency involved in the transaction (required if total_value_in_usd is not provided)",
                         "type": "number",
-                        "format": "float"
+                        "format": "float",
+                        "nullable": true
+                    },
+                    "total_value_in_usd": {
+                        "description": "Total value of the transaction in USD (required if amount is not provided)",
+                        "type": "number",
+                        "format": "float",
+                        "nullable": true
                     },
                     "is_buying": {
                         "description": "Indicates whether the transaction is a buy (true) or sell (false)",
@@ -651,7 +661,8 @@
                     "transaction_date": {
                         "description": "Date and time when the transaction occurred (format: dd-mm-yyyy)",
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "nullable": true
                     }
                 },
                 "type": "object"
