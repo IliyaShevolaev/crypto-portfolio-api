@@ -8,6 +8,7 @@ use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Portfolio\PortfolioController;
 use App\Http\Controllers\API\Portfolio\TransactionController;
+use App\Models\Transaction;
 use App\Services\CoinGeckoService;
 
 Route::get('/test', function (Request $request, CoinGeckoService $coin) {
@@ -26,7 +27,7 @@ Route::group(['prefix' => 'auth'], function() {
 });
 
 Route::group(['prefix' => 'portfolio', 'middleware' => 'auth:sanctum'], function() {
-    Route::get('/index', [PortfolioController::class, 'index']);
+    Route::get('/index', [PortfolioController::class, 'index'])->name('portfolio.index');
     Route::get('/show/{portfolio}', [PortfolioController::class, 'show']);
     Route::post('/store', [PortfolioController::class, 'store']);
     Route::patch('/update/{portfolio}', [PortfolioController::class, 'update']);

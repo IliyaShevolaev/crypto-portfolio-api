@@ -26,7 +26,7 @@ class PortfolioReource extends JsonResource
             'name' => $this->name,
             'balance' => $this->balanceCalculate(app(CoinApiInterface::class)),
             'created_at' => $this->created_at,
-            'updated' => $this->updated_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
