@@ -40,7 +40,7 @@ class UpdateTransactionAction
             $totalValueInUsd = BigDecimal::of($currentPrice)->multipliedBy(BigDecimal::of($amount));
         }
 
-        $transaction = Transaction::update([
+        $transaction->update([
             'coin_name' => $coinName,
             'description' => $transactionData['description'] ?? null,
             'amount' => $amount,
