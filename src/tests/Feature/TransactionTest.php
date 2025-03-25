@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Models\Portfolio;
-use App\Models\Transaction;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Portfolio;
 use Brick\Math\BigDecimal;
+use App\Models\Transaction;
+use Brick\Math\RoundingMode;
+use App\Contracts\CoinApiInterface;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -107,6 +109,124 @@ class TransactionTest extends TestCase
         $this->assertDatabaseCount('transactions', 2);
     }
 
+    /**@test */
+    public function test_calculates_transaction_by_getting_amount_correct() 
+    {
+        $this->withoutExceptionHandling();
+
+        $portfolio = Portfolio::factory()->create(['user_id' => $this->user->id]);
+
+        $mockedBtcPrice = '50000.0';
+        $apiMocked = $this->createMock(CoinApiInterface::class);
+        $apiMocked->method('getCurrentPrice')->willReturn([
+            'bitcoin' => ['usd' => $mockedBtcPrice]
+        ]);
+        app()->instance(CoinApiInterface::class, $apiMocked);
+
+        $testCases = [
+            ['amount' => '0.001'],
+            ['amount' => '0.002'],
+            ['amount' => '0.0005'],
+            ['amount' => '1.0'],
+        ];
+
+        foreach($testCases as $testCase) {
+            $amountData = [
+                'coin_name' => 'bitcoin',
+                'amount' => $testCase['amount'],
+                'is_buying' => true,
+                'portfolio_id' => $portfolio->id,
+            ];
+    
+            $response = $this->actingAs($this->user)->post('/api/transaction/store', $amountData);
+    
+            $response->assertOk();
+        
+            $expectedTotalValue = BigDecimal::of($mockedBtcPrice)->multipliedBy(BigDecimal::of($amountData['amount']))->toFloat();
+            $transaction = Transaction::where('amount', $amountData['amount'])->first();
+            $this->assertEquals($expectedTotalValue, $transaction->total_value_in_usd);
+        }
+    }
+
+    /**@test */
+    public function test_calculates_transaction_by_getting_usd_price_correct() 
+    {
+        $this->withoutExceptionHandling();
+
+        $portfolio = Portfolio::factory()->create(['user_id' => $this->user->id]);
+
+        $mockedBtcPrice = '50000.0';
+        $apiMocked = $this->createMock(CoinApiInterface::class);
+        $apiMocked->method('getCurrentPrice')->willReturn([
+            'bitcoin' => ['usd' => $mockedBtcPrice]
+        ]);
+        app()->instance(CoinApiInterface::class, $apiMocked);
+
+        $testCases = [
+            ['total_value_in_usd' => '100.0'],
+            ['total_value_in_usd' => '2500.0'],
+            ['total_value_in_usd' => '5.99'],
+            ['total_value_in_usd' => '100.50'],
+        ];
+
+        foreach($testCases as $testCase) {
+            $usdValueData = [
+                'coin_name' => 'bitcoin',
+                'total_value_in_usd' => $testCase['total_value_in_usd'],
+                'is_buying' => true,
+                'portfolio_id' => $portfolio->id,
+            ];
+    
+            $response = $this->actingAs($this->user)->post('/api/transaction/store', $usdValueData);
+    
+            $response->assertOk();
+        
+            $expectedTotalValue = BigDecimal::of($testCase['total_value_in_usd'])->dividedBy(BigDecimal::of($mockedBtcPrice), 8, RoundingMode::HALF_UP)->toFloat();
+            $transaction = Transaction::where('total_value_in_usd', $usdValueData['total_value_in_usd'])->first();
+            $this->assertEquals($expectedTotalValue, $transaction->amount);
+        }
+    }
+
+    /**@test */
+    public function test_calculates_transaction_by_getting_historical_price() 
+    {
+        $this->withoutExceptionHandling();
+
+        $portfolio = Portfolio::factory()->create(['user_id' => $this->user->id]);
+
+        $mockedBtcPrice = '50000.0';
+        $apiMocked = $this->createMock(CoinApiInterface::class);
+        $apiMocked->method('getHistoricalPrice')->willReturn($mockedBtcPrice);
+        app()->instance(CoinApiInterface::class, $apiMocked);
+
+        $testCases = [
+            ['total_value_in_usd' => '100.0'],
+            ['total_value_in_usd' => '2500.0'],
+            ['total_value_in_usd' => '5.99'],
+            ['total_value_in_usd' => '100.50'],
+        ];
+
+        foreach($testCases as $testCase) {
+            $usdValueData = [
+                'coin_name' => 'bitcoin',
+                'total_value_in_usd' => $testCase['total_value_in_usd'],
+                'is_buying' => true,
+                'portfolio_id' => $portfolio->id,
+                'transaction_date' => '01-01-2025',
+            ];
+    
+            $response = $this->actingAs($this->user)->post('/api/transaction/store', $usdValueData);
+    
+            $response->assertOk();
+        
+            $expectedTotalValue = BigDecimal::of($testCase['total_value_in_usd'])->dividedBy(BigDecimal::of($mockedBtcPrice), 8, RoundingMode::HALF_UP)->toFloat();
+            $transaction = Transaction::where('total_value_in_usd', $usdValueData['total_value_in_usd'])->first();
+            $this->assertEquals($expectedTotalValue, $transaction->amount);
+        }
+    }
+
+
+    /**@test */
     public function test_updates_transaction_to_portfolio()
     {
         $this->withoutExceptionHandling();
