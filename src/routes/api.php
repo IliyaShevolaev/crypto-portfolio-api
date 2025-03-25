@@ -7,7 +7,9 @@ use App\Services\CoinmarketcapService;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Portfolio\PortfolioController;
+use App\Http\Controllers\API\Portfolio\StatsController;
 use App\Http\Controllers\API\Portfolio\TransactionController;
+use App\Http\Controllers\API\Portfolio\TransactionStatsController;
 use App\Models\Transaction;
 use App\Services\CoinGeckoService;
 
@@ -40,6 +42,13 @@ Route::group(['prefix' => 'transaction', 'middleware' => 'auth:sanctum'], functi
     Route::post('/store', [TransactionController::class, 'store']);
     Route::patch('/update/{transaction}', [TransactionController::class, 'update']);
     Route::delete('/delete/{transaction}', [TransactionController::class, 'delete']);
+});
+
+Route::group(['prefix' => 'stats', 'middleware' => 'auth:sanctum'], function() {
+    Route::group(['prefix' => 'transaction'], function() {
+        Route::get('/index/{portfolio}', [TransactionStatsController::class, 'index']);
+        Route::get('/get/{transaction}', [TransactionStatsController::class, 'get']);
+    });
 });
 
 Route::get('/price-test', function (CoinmarketcapService $coinmarketcap) {

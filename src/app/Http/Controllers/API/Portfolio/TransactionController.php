@@ -35,9 +35,9 @@ class TransactionController extends ServiceController
     {
         $transactionData = $transactionRequest->validated();
 
-        $responce = $storeTransactionAction->handle($transactionData, $this->coinApi);
+        $response = $storeTransactionAction->handle($transactionData, $this->coinApi);
 
-        return $responce;
+        return $response;
     }
 
     public function update(TransactionRequest $transactionRequest, Transaction $transaction, UpdateTransactionAction $updateTransactionAction): JsonResponse
@@ -46,9 +46,9 @@ class TransactionController extends ServiceController
 
         $transactionData = $transactionRequest->validated();
 
-        $responce = $updateTransactionAction->handle($transactionData, $transaction, $this->coinApi);
+        $response = $updateTransactionAction->handle($transactionData, $transaction, $this->coinApi);
 
-        return $responce;
+        return $response;
     }
 
 
