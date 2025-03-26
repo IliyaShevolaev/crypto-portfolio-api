@@ -621,6 +621,137 @@
                     }
                 ]
             }
+        },
+        "/api/stats/transaction/index/{portfolio}": {
+            "get": {
+                "tags": [
+                    "Transaction Stats"
+                ],
+                "summary": "Get transaction statistics for a portfolio",
+                "description": "Retrieve profit and loss statistics for all transactions in a given portfolio",
+                "operationId": "394622a23e755bda624b2f0efcd86950",
+                "parameters": [
+                    {
+                        "name": "portfolio",
+                        "in": "path",
+                        "description": "ID of the portfolio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of transaction statistics",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "profitValuePercent": {
+                                                "description": "Percentage of profit/loss",
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "profitValuePrice": {
+                                                "description": "Absolute profit/loss value in USD",
+                                                "type": "number",
+                                                "format": "float"
+                                            },
+                                            "profitSide": {
+                                                "description": "Price change direction (+/-)",
+                                                "type": "string",
+                                                "enum": [
+                                                    "+",
+                                                    "-"
+                                                ]
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access"
+                    },
+                    "403": {
+                        "description": "Insufficient rights to access the portfolio"
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
+        },
+        "/api/stats/transaction/get/{transaction}": {
+            "get": {
+                "tags": [
+                    "Transaction Stats"
+                ],
+                "summary": "Get statistics for a specific transaction",
+                "description": "Retrieve profit and loss statistics for a single transaction",
+                "operationId": "5a2f5f9b5c3214e4ec4d9c096719f67b",
+                "parameters": [
+                    {
+                        "name": "transaction",
+                        "in": "path",
+                        "description": "ID of the transaction",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction statistics",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "profitValuePercent": {
+                                            "description": "Percentage of profit/loss",
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "profitValuePrice": {
+                                            "description": "Absolute profit/loss value in USD",
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "profitSide": {
+                                            "description": "Price change direction (+/-)",
+                                            "type": "string",
+                                            "enum": [
+                                                "+",
+                                                "-"
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access"
+                    },
+                    "403": {
+                        "description": "Insufficient rights to access the transaction"
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -762,6 +893,10 @@
         {
             "name": "Transaction",
             "description": "Operations related to portfolio transactions"
+        },
+        {
+            "name": "Transaction Stats",
+            "description": "Operations related to transaction profit and loss statistics"
         }
     ]
 }
