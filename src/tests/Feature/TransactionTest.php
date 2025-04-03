@@ -77,7 +77,7 @@ class TransactionTest extends TestCase
     }
 
     /**@test */
-    public function test_creates_transaction_to_portfolio()
+    public function test_creates_transaction_to_portfolio() // api call
     {
         $this->withoutExceptionHandling();
 
@@ -88,6 +88,15 @@ class TransactionTest extends TestCase
             'is_buying' => true,
             'portfolio_id' => $portfolio->id,
         ];
+
+        $btcMockedPrice = '50000.0';
+        $apiMock = $this->createMock(CoinApiInterface::class);
+        $apiMock->method('getCurrentPrice')->willReturn([
+            'bitcoin' => [
+                'usd' => $btcMockedPrice,
+            ]
+        ]);
+        $this->app->instance(CoinApiInterface::class, $apiMock);
 
         $response = $this->actingAs($this->user)->post('/api/transaction/store', $dataAmount);
 
@@ -233,6 +242,15 @@ class TransactionTest extends TestCase
 
         $portfolio = Portfolio::factory()->create(['user_id' => $this->user->id]);
         $transaction = Transaction::factory()->create(['portfolio_id' => $portfolio->id]);
+
+        $btcMockedPrice = '50000.0';
+        $apiMock = $this->createMock(CoinApiInterface::class);
+        $apiMock->method('getCurrentPrice')->willReturn([
+            'bitcoin' => [
+                'usd' => $btcMockedPrice,
+            ]
+        ]);
+        $this->app->instance(CoinApiInterface::class, $apiMock);
 
         $dataAmount = [
             'coin_name' => 'bitcoin',

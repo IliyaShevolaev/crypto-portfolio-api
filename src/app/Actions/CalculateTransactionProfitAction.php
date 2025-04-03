@@ -3,12 +3,9 @@
 namespace App\Actions;
 
 use Brick\Math\BigDecimal;
-use App\Models\Transaction;
 use Brick\Math\RoundingMode;
 use Illuminate\Support\Collection;
 use App\Contracts\CoinApiInterface;
-use App\Http\Resources\Portfolio\TransactionStatsResource;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CalculateTransactionProfitAction
 {
@@ -27,11 +24,12 @@ class CalculateTransactionProfitAction
             $profitSide = $profitValuePercent->toFloat() >= 0 ? '+' : '-';
             $profitValuePrice = BigDecimal::of($currentCoinPrice)->multipliedBy($transaction->amount)->minus($transaction->total_value_in_usd);
 
-            array_push($result, new TransactionStatsResource((object) [
+            array_push($result, [
+                'id' => $transaction->id,
                 'profitValuePercent' => abs($profitValuePercent->toFloat()),
                 'profitValuePrice' => abs($profitValuePrice->toFloat()),
                 'profitSide' => $profitSide,
-            ]));
+            ]);
         }
 
         return $result;

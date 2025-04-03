@@ -8,27 +8,26 @@ use App\Contracts\CoinApiInterface;
 use App\Http\Controllers\Controller;
 use App\Actions\CalculateTransactionProfitAction;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\Http\Resources\Portfolio\TransactionStatsResource;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\JsonResponse;
 
 class TransactionStatsController extends Controller
 {
     use AuthorizesRequests;
 
-    public function index(Portfolio $portfolio, CoinApiInterface $coinApi, CalculateTransactionProfitAction $calculateTransactionProfitAction) : AnonymousResourceCollection
+    public function index(Portfolio $portfolio, CoinApiInterface $coinApi, CalculateTransactionProfitAction $calculateTransactionProfitAction) : JsonResponse
     {
         $transactions = $portfolio->transactions;
         $transactionsStats = $calculateTransactionProfitAction->handle($transactions, $coinApi);
 
-        return TransactionStatsResource::collection($transactionsStats);
+        return response()->json($transactionsStats, 200);
     }
 
-    public function get(Transaction $transaction, CoinApiInterface $coinApi, CalculateTransactionProfitAction $calculateTransactionProfitAction) : TransactionStatsResource
+    public function get(Transaction $transaction, CoinApiInterface $coinApi, CalculateTransactionProfitAction $calculateTransactionProfitAction) : JsonResponse
     {
         $this->authorize('isOwner', $transaction);
 
-        $resource = $calculateTransactionProfitAction->handle(collect([$transaction]), $coinApi);
+        $stats = $calculateTransactionProfitAction->handle(collect([$transaction]), $coinApi);
         
-        return $resource[0];
+        return response()->json($stats[0], 200);
     }
 }

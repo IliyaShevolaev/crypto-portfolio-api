@@ -17,7 +17,7 @@ class TransactionFactory extends Factory
      */
     public function definition(): array
     {
-        $amount = fake()->randomFloat(null, 0);
+        $amount = fake()->randomFloat(null, 1);
         $priceAtMoment = fake()->randomFloat(null, 0);
 
         return [
