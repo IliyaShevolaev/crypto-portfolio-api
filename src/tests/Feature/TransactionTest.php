@@ -77,7 +77,7 @@ class TransactionTest extends TestCase
     }
 
     /**@test */
-    public function test_creates_transaction_to_portfolio() // api call
+    public function test_creates_transaction_to_portfolio()
     {
         $this->withoutExceptionHandling();
 

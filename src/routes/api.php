@@ -1,17 +1,16 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Services\CoinGeckoService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Services\CoinmarketcapService;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Portfolio\PortfolioController;
-use App\Http\Controllers\API\Portfolio\StatsController;
 use App\Http\Controllers\API\Portfolio\TransactionController;
-use App\Http\Controllers\API\Portfolio\TransactionStatsController;
-use App\Models\Transaction;
-use App\Services\CoinGeckoService;
+use App\Http\Controllers\API\Stats\PortfolioStatsController;
+use App\Http\Controllers\API\Stats\TransactionStatsController;
 
 Route::get('/test', function (Request $request, CoinGeckoService $coin) {
     return $coin->getCurrentPrice(['ethereum', 'solana']);
@@ -46,8 +45,12 @@ Route::group(['prefix' => 'transaction', 'middleware' => 'auth:sanctum'], functi
 
 Route::group(['prefix' => 'stats', 'middleware' => 'auth:sanctum'], function() {
     Route::group(['prefix' => 'transaction'], function() {
-        Route::get('/index/{portfolio}', [TransactionStatsController::class, 'index']);
         Route::get('/get/{transaction}', [TransactionStatsController::class, 'get']);
+    });
+
+    Route::group(['prefix' => 'portfolio'], function() {
+        Route::get('/index', [PortfolioStatsController::class, 'index']);
+        Route::get('/get/{portfolio}', [PortfolioStatsController::class, 'get']);
     });
 });
 

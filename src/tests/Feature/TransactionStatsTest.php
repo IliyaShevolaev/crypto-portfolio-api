@@ -14,18 +14,13 @@ class TransactionStatsTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+    private $apiMock;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->user = User::factory()->create();
-    }
-
-    /**@test */
-    public function test_transaction_stats_returns_list_of_stats(): void
-    {
-        $this->withoutExceptionHandling();
 
         $btcMockedPrice = '50000.0';
         $apiMock = $this->createMock(CoinApiInterface::class);
@@ -34,6 +29,13 @@ class TransactionStatsTest extends TestCase
                 'usd' => $btcMockedPrice,
             ]
         ]);
+        $this->app->instance(CoinApiInterface::class, $apiMock);
+    }
+
+    /**@test */
+    public function test_transaction_stats_returns_list_of_stats(): void
+    {
+        $this->withoutExceptionHandling();
 
         $portfolio = Portfolio::factory()->create(['user_id' => $this->user->id]);
 
@@ -51,16 +53,6 @@ class TransactionStatsTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $btcMockedPrice = '50000.0';
-        $apiMock = $this->createMock(CoinApiInterface::class);
-        $apiMock->method('getCurrentPrice')->willReturn([
-            'bitcoin' => [
-                'usd' => $btcMockedPrice,
-            ]
-        ]);
-        $this->app->instance(CoinApiInterface::class, $apiMock);
-
-        
         $portfolio = Portfolio::factory()->create(['user_id' => $this->user->id]);
 
         $transaction = Transaction::factory()->create([
@@ -119,5 +111,22 @@ class TransactionStatsTest extends TestCase
 
         $response2->assertOk();
         $response2->assertJson($statsJson2);
+    }
+
+    /**@test */
+    public function test_only_owner_of_transaction_stats_can_see_stats(): void
+    {
+        $otherUser = User::factory()->create();
+        
+        $portfolio = Portfolio::factory()->create(['user_id' => $this->user->id]);
+        $transaction = Transaction::factory()->create([
+            'coin_name' => 'bitcoin', 
+            'portfolio_id' => $portfolio->id]);
+
+        $response = $this->actingAs($otherUser)->get('api/stats/transaction/get/' . $transaction->id);
+        $response->assertStatus(403);
+
+        $response = $this->actingAs($otherUser)->get('api/stats/transaction/index/' . $portfolio->id);
+        $response->assertStatus(403);
     }
 }
