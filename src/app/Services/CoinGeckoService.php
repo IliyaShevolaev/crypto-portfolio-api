@@ -55,7 +55,7 @@ class CoinGeckoService implements CoinApiInterface
             ]);
 
             foreach ($coins as $coinName => $coinPrice) {
-                Cache::put('coins:' . $coinName, $coinPrice, 60 * 2);
+                Cache::put('coins:' . $coinName, $coinPrice, config('cached-value-time.coin_price_value'));
                 $resultCoins[$coinName] = $coinPrice;
             }
         }

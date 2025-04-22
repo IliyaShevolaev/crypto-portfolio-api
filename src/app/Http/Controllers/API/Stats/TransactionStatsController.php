@@ -3,22 +3,19 @@
 namespace App\Http\Controllers\API\Stats;
 
 use App\Models\Transaction;
-use App\Contracts\CoinApiInterface;
-use App\Http\Controllers\Controller;
-use App\Actions\CalculateTransactionProfitAction;
+use App\Http\Controllers\BaseControllers\StatsController;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cache;
 
-class TransactionStatsController extends Controller
+class TransactionStatsController extends StatsController
 {
     use AuthorizesRequests;
 
-    public function get(Transaction $transaction, CoinApiInterface $coinApi, CalculateTransactionProfitAction $calculateTransactionProfitAction) : JsonResponse
+    public function get(Transaction $transaction) : JsonResponse
     {
         $this->authorize('isOwner', $transaction);
 
-        $result = $calculateTransactionProfitAction->handle(collect([$transaction]), $coinApi);
+        $result = $this->calculateTransactionProfitAction->handle(collect([$transaction]), $this->coinApi);
 
         return response()->json($result[0], 200);
     }

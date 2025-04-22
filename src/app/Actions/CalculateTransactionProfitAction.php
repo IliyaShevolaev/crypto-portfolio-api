@@ -33,7 +33,9 @@ class CalculateTransactionProfitAction
                 $transactionPrice = $transaction->price_at_buy_moment;
 
                 $profitValuePercent = BigDecimal::of($currentCoinPrice)->minus(BigDecimal::of($transactionPrice))->dividedBy(BigDecimal::of($transactionPrice), 8, RoundingMode::HALF_UP)->multipliedBy(100);
+
                 $profitSide = $profitValuePercent->toFloat() >= 0 ? '+' : '-';
+
                 $profitValuePrice = BigDecimal::of($currentCoinPrice)->multipliedBy($transaction->amount)->minus($transaction->total_value_in_usd);
 
                 $currentStats = [
@@ -45,7 +47,11 @@ class CalculateTransactionProfitAction
 
                 array_push($result, $currentStats);
                 
-                Cache::put('transaction_stats:' . $transaction->id, $currentStats, 60 * 5);
+                Cache::put(
+                    'transaction_stats:' . $transaction->id,
+                    $currentStats, 
+                    config('cached-values-time.transactions_stats')
+                );
             }
         }
 
