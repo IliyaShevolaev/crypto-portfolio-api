@@ -18,7 +18,7 @@ class CalculateTransactionProfitAction
         foreach ($transactions as $transaction) {
             $statsCached = Cache::get('transaction_stats:' . $transaction->id);
             if (isset($statsCached)) {
-                array_push($result, $statsCached);
+                $result[$transaction->id] = $statsCached;
             } else {
                 array_push($transcationsToRequest, $transaction);
             }
@@ -39,13 +39,12 @@ class CalculateTransactionProfitAction
                 $profitValuePrice = BigDecimal::of($currentCoinPrice)->multipliedBy($transaction->amount)->minus($transaction->total_value_in_usd);
 
                 $currentStats = [
-                    'id' => $transaction->id,
                     'profitValuePercent' => abs($profitValuePercent->toFloat()),
                     'profitValuePrice' => abs($profitValuePrice->toFloat()),
                     'profitSide' => $profitSide,
                 ];
 
-                array_push($result, $currentStats);
+                $result[$transaction->id] = $currentStats;
                 
                 Cache::put(
                     'transaction_stats:' . $transaction->id,

@@ -2,33 +2,40 @@
 
 namespace App\Http\Controllers\API\Stats;
 
-use App\Actions\CalculatePortfolioProfitAction;
 use App\Models\Portfolio;
-use App\Contracts\CoinApiInterface;
-use App\Actions\CalculateTransactionProfitAction;
-use App\Http\Controllers\BaseControllers\ServiceController;
 use App\Http\Controllers\BaseControllers\StatsController;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\JsonResponse;   
+use Illuminate\Http\JsonResponse;
 
 class PortfolioStatsController extends StatsController
 {
     use AuthorizesRequests;
 
-    public function index() {}
+    public function index() : JsonResponse
+    {
+        $userStats = $this->calculateUserProfitAction->handle(
+            $this->calculateTransactionProfitAction,
+            $this->calculatePortfolioProfitAction,
+            $this->coinApi,
+        );
 
-    public function get(Portfolio $portfolio): JsonResponse 
+        return response()->json([
+            $userStats
+        ], 200);
+    }
+
+    public function get(Portfolio $portfolio): JsonResponse
     {
         $this->authorize('isOwner', $portfolio);
 
         $transactions = $portfolio->transactions;
         $transactionsStats = $this->calculateTransactionProfitAction->handle($transactions, $this->coinApi);
 
-        $totalPortfolioResults = $this->calculatePortfolioProfitAction->handle($transactions, $transactionsStats);
+        $totalPortfolioStats = $this->calculatePortfolioProfitAction->handle($transactions, $transactionsStats);
 
         return response()->json([
-            'total_value' => 100,
-            'transaction_stats' => $transactionsStats
+            'totalStats' => $totalPortfolioStats,
+            'transactionStats' => $transactionsStats
         ], 200);
     }
 }
