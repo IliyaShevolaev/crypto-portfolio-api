@@ -358,6 +358,100 @@
                 ]
             }
         },
+        "/api/stats/portfolio/index": {
+            "get": {
+                "tags": [
+                    "Portfolio Stats"
+                ],
+                "summary": "Get statistics for all user portfolios",
+                "description": "Returns overall profit statistics for all user portfolios, including total user profit and individual portfolio stats.",
+                "operationId": "5beb2c68154d6a03ca8cdaa2a9c13ea6",
+                "responses": {
+                    "200": {
+                        "description": "User and portfolios statistics",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "userAccountStats": {
+                                            "properties": {
+                                                "totalProfitPrice": {
+                                                    "description": "Total profit or loss in USD",
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 125.35
+                                                },
+                                                "totalProfitPercent": {
+                                                    "description": "Total profit or loss in percentage",
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 14.27
+                                                },
+                                                "profitSide": {
+                                                    "description": "Profit side: '+' for gain, '-' for loss",
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "+",
+                                                        "-"
+                                                    ],
+                                                    "example": "+"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "porftoliosStats": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "balanceStartValue": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 1000
+                                                    },
+                                                    "balanceCurrentValue": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 1125.35
+                                                    },
+                                                    "profitValuePercent": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 12.53
+                                                    },
+                                                    "profitValuePrice": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 125.35
+                                                    },
+                                                    "profitSide": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "+",
+                                                            "-"
+                                                        ],
+                                                        "example": "+"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "Sanctum Auth": []
+                    }
+                ]
+            }
+        },
         "/api/auth/register": {
             "post": {
                 "tags": [
@@ -622,73 +716,6 @@
                 ]
             }
         },
-        "/api/stats/transaction/index/{portfolio}": {
-            "get": {
-                "tags": [
-                    "Transaction Stats"
-                ],
-                "summary": "Get transaction statistics for a portfolio",
-                "description": "Retrieve profit and loss statistics for all transactions in a given portfolio",
-                "operationId": "394622a23e755bda624b2f0efcd86950",
-                "parameters": [
-                    {
-                        "name": "portfolio",
-                        "in": "path",
-                        "description": "ID of the portfolio",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "List of transaction statistics",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "profitValuePercent": {
-                                                "description": "Percentage of profit/loss",
-                                                "type": "number",
-                                                "format": "float"
-                                            },
-                                            "profitValuePrice": {
-                                                "description": "Absolute profit/loss value in USD",
-                                                "type": "number",
-                                                "format": "float"
-                                            },
-                                            "profitSide": {
-                                                "description": "Price change direction (+/-)",
-                                                "type": "string",
-                                                "enum": [
-                                                    "+",
-                                                    "-"
-                                                ]
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized access"
-                    },
-                    "403": {
-                        "description": "Insufficient rights to access the portfolio"
-                    }
-                },
-                "security": [
-                    {
-                        "Sanctum Auth": []
-                    }
-                ]
-            }
-        },
         "/api/stats/transaction/get/{transaction}": {
             "get": {
                 "tags": [
@@ -897,6 +924,10 @@
         {
             "name": "Transaction Stats",
             "description": "Operations related to transaction profit and loss statistics"
+        },
+        {
+            "name": "Portfolio Stats",
+            "description": "Portfolio Stats"
         }
     ]
 }

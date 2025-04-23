@@ -17,6 +17,6 @@ class TransactionStatsController extends StatsController
 
         $result = $this->calculateTransactionProfitAction->handle(collect([$transaction]), $this->coinApi);
 
-        return response()->json($result[0], 200);
+        return response()->json($result, 200);
     }
 }
