@@ -89,7 +89,7 @@
                 },
                 "security": [
                     {
-                        "sanctumAuth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -121,7 +121,7 @@
                 },
                 "security": [
                     {
-                        "sanctumAuth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -154,7 +154,7 @@
                 },
                 "security": [
                     {
-                        "Sanctum Auth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -198,7 +198,7 @@
                 },
                 "security": [
                     {
-                        "Sanctum Auth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -250,7 +250,7 @@
                 },
                 "security": [
                     {
-                        "Sanctum Auth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -316,7 +316,7 @@
                 },
                 "security": [
                     {
-                        "Sanctum Auth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -353,7 +353,7 @@
                 },
                 "security": [
                     {
-                        "Sanctum Auth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -447,7 +447,121 @@
                 },
                 "security": [
                     {
-                        "Sanctum Auth": []
+                        "SanctumAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/stats/portfolio/get/{id}": {
+            "get": {
+                "tags": [
+                    "Portfolio Stats"
+                ],
+                "summary": "Get statistics for single user portfolio",
+                "description": "Returns profit statistics for single user portfolios, including portfolio profit and individual transactions stats.",
+                "operationId": "bb65fb0ebab839017ba2fee91ef12f44",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Portfolio ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Portfolio statistics with transactions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "totalStats": {
+                                            "properties": {
+                                                "balanceStartValue": {
+                                                    "description": "Initial portfolio balance value",
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 391890.39
+                                                },
+                                                "balanceCurrentValue": {
+                                                    "description": "Current portfolio balance value",
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 509325.45
+                                                },
+                                                "profitValuePercent": {
+                                                    "description": "Profit percentage",
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 29.96
+                                                },
+                                                "profitValuePrice": {
+                                                    "description": "Profit value in currency",
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 117435.05
+                                                },
+                                                "profitSide": {
+                                                    "description": "Profit direction: '+' for gain, '-' for loss",
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "+",
+                                                        "-"
+                                                    ],
+                                                    "example": "+"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "transactionStats": {
+                                            "description": "Statistics for individual transactions, keyed by transaction ID",
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "properties": {
+                                                    "profitValuePercent": {
+                                                        "description": "Transaction profit percentage",
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 14.59
+                                                    },
+                                                    "profitValuePrice": {
+                                                        "description": "Transaction profit value in currency",
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 14.83
+                                                    },
+                                                    "profitSide": {
+                                                        "description": "Transaction profit direction: '+' for gain, '-' for loss",
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "+",
+                                                            "-"
+                                                        ],
+                                                        "example": "+"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -555,7 +669,7 @@
                 },
                 "security": [
                     {
-                        "Sanctum Auth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -593,7 +707,7 @@
                 },
                 "security": [
                     {
-                        "Sanctum Auth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -633,7 +747,7 @@
                 },
                 "security": [
                     {
-                        "Sanctum Auth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -677,7 +791,7 @@
                 },
                 "security": [
                     {
-                        "Sanctum Auth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -711,7 +825,7 @@
                 },
                 "security": [
                     {
-                        "Sanctum Auth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -775,7 +889,7 @@
                 },
                 "security": [
                     {
-                        "Sanctum Auth": []
+                        "SanctumAuth": []
                     }
                 ]
             }
@@ -900,7 +1014,7 @@
             }
         },
         "securitySchemes": {
-            "Sanctum Auth": {
+            "SanctumAuth": {
                 "type": "apiKey",
                 "description": "Введите токен в формате 'Bearer {your-token}'",
                 "name": "Authorization",

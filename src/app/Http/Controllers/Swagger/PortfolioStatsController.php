@@ -17,7 +17,7 @@ class PortfolioStatsController extends StatsController
      *     summary="Get statistics for all user portfolios",
      *     description="Returns overall profit statistics for all user portfolios, including total user profit and individual portfolio stats.",
      *     tags={"Portfolio Stats"},
-     *     security={{"Sanctum Auth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="User and portfolios statistics",
@@ -54,8 +54,59 @@ class PortfolioStatsController extends StatsController
         //
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/stats/portfolio/get/{id}",
+     *     summary="Get statistics for single user portfolio",
+     *     description="Returns profit statistics for single user portfolios, including portfolio profit and individual transactions stats.",
+     *     tags={"Portfolio Stats"},
+     *     security={{"SanctumAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Portfolio ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Portfolio statistics with transactions",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="totalStats",
+     *                 type="object",
+     *                 @OA\Property(property="balanceStartValue", type="number", format="float", example=391890.39, description="Initial portfolio balance value"),
+     *                 @OA\Property(property="balanceCurrentValue", type="number", format="float", example=509325.45, description="Current portfolio balance value"),
+     *                 @OA\Property(property="profitValuePercent", type="number", format="float", example=29.96, description="Profit percentage"),
+     *                 @OA\Property(property="profitValuePrice", type="number", format="float", example=117435.05, description="Profit value in currency"),
+     *                 @OA\Property(property="profitSide", type="string", example="+", enum={"+", "-"}, description="Profit direction: '+' for gain, '-' for loss")
+     *             ),
+     *             @OA\Property(
+     *                 property="transactionStats",
+     *                 type="object",
+     *                 description="Statistics for individual transactions, keyed by transaction ID",
+     *                 @OA\AdditionalProperties(
+     *                     type="object",
+     *                     @OA\Property(property="profitValuePercent", type="number", format="float", example=14.59, description="Transaction profit percentage"),
+     *                     @OA\Property(property="profitValuePrice", type="number", format="float", example=14.83, description="Transaction profit value in currency"),
+     *                     @OA\Property(property="profitSide", type="string", example="+", enum={"+", "-"}, description="Transaction profit direction: '+' for gain, '-' for loss")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Forbidden"
+     *     )
+     * )
+     */
     public function get(Portfolio $portfolio)
     {
-        // 
+        //
     }
 }

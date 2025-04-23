@@ -21,7 +21,7 @@ class PortfolioController extends Controller
      *     summary="Get user portfolio",
      *     description="Get the portfolio of the authenticated user",
      *     tags={"Portfolio"},
-     *     security={{"Sanctum Auth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="A list of portfolio items",
@@ -47,7 +47,7 @@ class PortfolioController extends Controller
      *     summary="Get portfolio by ID",
      *     description="Retrieve a specific portfolio by its ID",
      *     tags={"Portfolio"},
-     *     security={{"Sanctum Auth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -81,7 +81,7 @@ class PortfolioController extends Controller
      *     summary="Create a new portfolio",
      *     description="Create a new portfolio for the authenticated user",
      *     tags={"Portfolio"},
-     *     security={{"Sanctum Auth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -115,7 +115,7 @@ class PortfolioController extends Controller
      *     summary="Update an existing portfolio",
      *     description="Update the details of a portfolio",
      *     tags={"Portfolio"},
-     *     security={{"Sanctum Auth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -160,7 +160,7 @@ class PortfolioController extends Controller
      *     summary="Delete a portfolio",
      *     description="Delete a specific portfolio by ID",
      *     tags={"Portfolio"},
-     *     security={{"Sanctum Auth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

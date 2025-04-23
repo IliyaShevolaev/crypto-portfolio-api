@@ -19,13 +19,13 @@ class TransactionStatsController extends Controller
 {
     use AuthorizesRequests;
 
-     /**
+    /**
      * @OA\Get(
      *     path="/api/stats/transaction/get/{transaction}",
      *     summary="Get statistics for a specific transaction",
      *     description="Retrieve profit and loss statistics for a single transaction",
      *     tags={"Transaction Stats"},
-     *     security={{"Sanctum Auth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\Parameter(
      *         name="transaction",
      *         in="path",

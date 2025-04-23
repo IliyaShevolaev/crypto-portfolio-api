@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
  * ),
  * 
  * @OA\SecurityScheme(
- *     securityScheme="Sanctum Auth",
+ *     securityScheme="SanctumAuth",
  *     type="apiKey",
  *     in="header",
  *     name="Authorization",
@@ -23,7 +23,4 @@ use App\Http\Controllers\Controller;
  * )
  * 
  */
-class MainController extends Controller
-{
-    
-}
+class MainController extends Controller {}

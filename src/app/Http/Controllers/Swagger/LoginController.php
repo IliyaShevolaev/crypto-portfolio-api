@@ -46,7 +46,7 @@ class LoginController extends Controller
      *     path="/api/auth/logout",
      *     summary="Logout user by deleting current access token",
      *     tags={"Authentication"},
-     *     security={{"sanctumAuth":{}}},
+     *     security={{"SanctumAuth":{}}},
      * 
      *     @OA\Response(response=200, description="Successful logout",
      *         @OA\JsonContent(
@@ -65,7 +65,7 @@ class LoginController extends Controller
      *     path="/api/auth/logout-all",
      *     summary="Logout user from all devices by deleting all access tokens",
      *     tags={"Authentication"},
-     *     security={{"sanctumAuth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\Response(response=200, description="Successful absolute logout",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="logout")

@@ -24,7 +24,7 @@ class TransactionController extends ServiceController
      *     summary="Get portfolio transactions",
      *     description="Retrieve a list of transactions for a given portfolio",
      *     tags={"Transaction"},
-     *     security={{"Sanctum Auth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\Parameter(
      *         name="portfolio",
      *         in="path",
@@ -50,7 +50,7 @@ class TransactionController extends ServiceController
      *     summary="Get transaction details",
      *     description="Retrieve details of a specific transaction",
      *     tags={"Transaction"},
-     *     security={{"Sanctum Auth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\Parameter(
      *         name="transaction",
      *         in="path",
@@ -76,7 +76,7 @@ class TransactionController extends ServiceController
      *     summary="Create a new transaction",
      *     description="Add a new transaction to the portfolio",
      *     tags={"Transaction"},
-     *     security={{"Sanctum Auth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/TransactionRequest")
@@ -103,7 +103,7 @@ class TransactionController extends ServiceController
      *     summary="Update a transaction",
      *     description="Modify an existing transaction",
      *     tags={"Transaction"},
-     *     security={{"Sanctum Auth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\Parameter(
      *         name="transaction",
      *         in="path",
@@ -136,7 +136,7 @@ class TransactionController extends ServiceController
      *     summary="Delete a transaction",
      *     description="Remove a specific transaction from the portfolio",
      *     tags={"Transaction"},
-     *     security={{"Sanctum Auth":{}}},
+     *     security={{"SanctumAuth":{}}},
      *     @OA\Parameter(
      *         name="transaction",
      *         in="path",
